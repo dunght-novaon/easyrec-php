@@ -1,0 +1,20 @@
+{
+    "name": "hafael/easyrec-php",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.2",
+        "php": "5.4"
+    },
+    "require-dev": {
+        "phpunit": "6",
+        "mockery/mockery": "^0.9.9"
+    },
+    "license": "MIT license",
+    "authors": [
+        {
+            "name": "Rafael Villa-Verde",
+            "email": "villa655321verde@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
