@@ -1,20 +1,9 @@
 <?php
 /**
- * Part of the Easyrec package.
- *
- * NOTICE OF LICENSE
- *
- * Licensed under the 3-clause BSD License.
- *
- * This source file is subject to the 3-clause BSD License that is
- * bundled with this package in the LICENSE file.
- *
- * @package    Easyrec
- * @version    0.0.1
- * @author     VerdeIT
- * @license    BSD License (3-clause)
- * @copyright  (c) 2017-2017, VerdeIT
- * @link       https://github.com/hafael/easyrec
+ * Created by PhpStorm.
+ * User: rafael
+ * Date: 10/06/17
+ * Time: 21:07
  */
 
 namespace Hafael\Easyrec\Exception;
@@ -126,6 +115,7 @@ class Handler
      */
     protected function handleException($message, $statusCode, $errorType, $errorCode, $missingParameter, $rawOutput)
     {
+
         if ($statusCode === 400 && $errorCode === 'rate_limit') {
             $class = 'ApiLimitExceeded';
         } elseif ($statusCode === 400 && $errorType === 'invalid_request_error') {
@@ -143,6 +133,8 @@ class Handler
         $class = "\\Hafael\\Easyrec\\Exception\\{$class}Exception";
 
         $instance = new $class($message, $statusCode);
+
+
 
         $instance->setErrorCode($errorCode);
         $instance->setErrorType($errorType);

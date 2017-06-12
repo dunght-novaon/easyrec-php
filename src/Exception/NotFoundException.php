@@ -22,5 +22,4 @@ namespace Hafael\Easyrec\Exception;
 
 class NotFoundException extends EasyrecException
 {
-
 }

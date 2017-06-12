@@ -89,7 +89,7 @@ class Config implements ConfigInterface
     {
         $this->setVersion($version);
 
-        $this->setBaseUrl($baseUrl ?: getenv('EASYREC_BASEURL'));
+        $this->setBaseUrl($baseUrl ?: getenv('EASYREC_BASE_URL'));
 
         $this->setApiKey($apiKey ?: getenv('EASYREC_API_KEY'));
 

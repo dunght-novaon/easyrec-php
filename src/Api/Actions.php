@@ -39,6 +39,7 @@ class Actions extends Api
      */
     public function view($sessionId, $itemId, $itemDescription, $itemUrl, $userId, $itemImageUrl, $actionTime, $itemType, $actionInfo)
     {
+
         return $this->_get("view", [
             "sessionid" => $sessionId,
             "itemid" => $itemId,

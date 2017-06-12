@@ -41,7 +41,7 @@ class Easyrec
      *
      * @var string
      */
-    protected static $amountConverter = '\\Cartalyst\\Stripe\\AmountConverter::convert';
+    protected static $amountConverter = '\\Hafael\\Easyrec\\AmountConverter::convert';
 
     /**
      * Constructor.

@@ -175,14 +175,15 @@ abstract class Api implements ApiInterface
     public function execute($httpMethod, $url, array $parameters = [])
     {
         try {
-            $parameters = Utility::prepareParameters($parameters);
-
             $parameters = array_merge($parameters, [
                 'apikey' => isset($parameters['apiKey'])?$parameters['apiKey']:$this->config->getApiKey(),
-                'tenantId' => isset($parameters['tenantId'])?$parameters['tenantId']:$this->config->getTenantId(),
+                'tenantid' => isset($parameters['tenantId'])?$parameters['tenantId']:$this->config->getTenantId(),
             ]);
 
+            $parameters = Utility::prepareParameters($parameters);
+
             $response = $this->getClient()->{$httpMethod}('api/'.$this->config->getApiVersion().'/json/'.$url, [ 'query' => $parameters ]);
+
 
             return json_decode((string) $response->getBody(), true);
         } catch (ClientException $e) {

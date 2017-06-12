@@ -20,7 +20,7 @@
 namespace Hafael\Easyrec\Exception;
 
 
-class EasyrecException
+class EasyrecException extends \Exception
 {
     /**
      * The error code returned by Easyrec.
