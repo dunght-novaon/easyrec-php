@@ -2,17 +2,30 @@
     "name": "hafael/easyrec-php",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/guzzle": "6.2",
         "php": "5.4"
     },
     "require-dev": {
-        "phpunit": "6",
+        "phpunit/phpunit": ">=6.0.0",
         "mockery/mockery": "^0.9.9"
     },
-    "license": "MIT license",
+    "autoload": {
+        "psr-4": {
+            "Hafael\\Easyrec\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/EasyrecTest.php"
+        ],
+        "psr-4": {
+            "Hafael\\Easyrec\\Tests\\": "tests/"
+        }
+    },
+    "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "Rafael Villa-Verde",
+            "name": "VerdeIT",
             "email": "villa655321verde@gmail.com"
         }
     ],
