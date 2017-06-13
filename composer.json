@@ -1,9 +1,20 @@
 {
     "name": "hafael/easyrec-php",
     "type": "library",
+    "description": "Logging for PHP 5.3",
+    "keywords": [ "easyrec", "php", "recommendation", "ranking" ],
+    "homepage": "https://github.com/hafael/easyrec-php",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "VerdeIT",
+            "email": "villa655321verde@gmail.com",
+            "homepage": "https://github.com/hafael"
+        }
+    ],
     "require": {
-        "guzzlehttp/guzzle": "6.2",
-        "php": "5.4"
+        "guzzlehttp/guzzle": ">=6.0",
+        "php": ">=5.4.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=6.0.0",
@@ -22,12 +33,5 @@
             "Hafael\\Easyrec\\Tests\\": "tests/"
         }
     },
-    "license": "BSD-3-Clause",
-    "authors": [
-        {
-            "name": "VerdeIT",
-            "email": "villa655321verde@gmail.com"
-        }
-    ],
     "minimum-stability": "dev"
 }
