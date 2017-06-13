@@ -61,31 +61,23 @@ class Config implements ConfigInterface
     protected $baseUrl;
 
     /**
-     * The idempotency key.
+     * The token key.
      *
      * @var string
      */
-    protected $idempotencyKey;
-
-    /**
-     * The managed account id.
-     *
-     * @var string
-     */
-    protected $accountId;
+    protected $token;
 
     /**
      * Constructor.
      *
-     * @param  string  $version
-     * @param  string  $baseUrl
-     * @param  string  $apiKey
-     * @param  string  $tenantId
-     * @param  string  $apiVersion
-     * @return void
-     * @throws \RuntimeException
+     * @param  string $version
+     * @param  string $baseUrl
+     * @param  string $apiKey
+     * @param  string $tenantId
+     * @param  string $apiVersion
+     * @param  string $token
      */
-    public function __construct($version, $baseUrl, $apiKey, $tenantId, $apiVersion)
+    public function __construct($version, $baseUrl, $apiKey, $tenantId, $apiVersion, $token)
     {
         $this->setVersion($version);
 
@@ -97,9 +89,12 @@ class Config implements ConfigInterface
 
         $this->setApiVersion($apiVersion ?: getenv('EASYREC_API_VERSION') ?: '1.1');
 
+        $this->setToken($token ?: getenv('EASYREC_TOKEN'));
+
         if (! $this->apiKey || ! $this->tenantId) {
             throw new \RuntimeException('The Easyrec API key is not defined!');
         }
+        $this->token = $token;
     }
 
     /**
@@ -197,41 +192,20 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdempotencyKey()
+    public function getToken()
     {
-        return $this->idempotencyKey;
+        return $this->token;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setIdempotencyKey($idempotencyKey)
+    public function setToken($token)
     {
-        $this->idempotencyKey = $idempotencyKey;
+        $this->token = $token;
 
         return $this;
     }
 
-    /**
-     * Returns the managed account id.
-     *
-     * @return string
-     */
-    public function getAccountId()
-    {
-        return $this->accountId;
-    }
 
-    /**
-     * Sets the managed account id.
-     *
-     * @param  string  $accountId
-     * @return $this
-     */
-    public function setAccountId($accountId)
-    {
-        $this->accountId = $accountId;
-
-        return $this;
-    }
 }

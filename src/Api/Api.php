@@ -179,9 +179,10 @@ abstract class Api implements ApiInterface
             $parameters = array_merge($parameters, [
                 'apikey' => isset($parameters['apiKey'])?$parameters['apiKey']:$this->config->getApiKey(),
                 'tenantid' => isset($parameters['tenantId'])?$parameters['tenantId']:$this->config->getTenantId(),
+                'token' => isset($parameters['token'])?$parameters['token']:$this->config->getToken(),
             ]);
 
-            $parameters = Utility::prepareParameters($parameters);
+            $parameters = Utility::transformArrayIntoHttpQuery($parameters);
 
             $response = $this->getClient()->{$httpMethod}('api/'.$this->config->getApiVersion().'/json/'.$url, [ 'query' => $parameters ]);
 
@@ -239,17 +240,13 @@ abstract class Api implements ApiInterface
 
             $config = $this->config;
 
-            if ($idempotencykey = $config->getIdempotencyKey()) {
-                $request = $request->withHeader('Idempotency-Key', $idempotencykey);
-            }
-
-            if ($accountId = $config->getAccountId()) {
-                $request = $request->withHeader('Easyrec-Account', $accountId);
+            if ($token = $config->getToken()) {
+                $request = $request->withHeader('Easyrec-Token', $token);
             }
 
             $request = $request->withHeader('Easyrec-Version', $config->getApiVersion());
 
-            $request = $request->withHeader('User-Agent', 'VerdeIT-Easyrec/'.$config->getVersion());
+            $request = $request->withHeader('User-Agent', 'VerdeIT-Easyrec-PHP/'.$config->getVersion());
 
             $request = $request->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()));
 

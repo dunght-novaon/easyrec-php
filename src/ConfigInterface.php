@@ -98,17 +98,17 @@ interface ConfigInterface
     public function setTenantId($tenantId);
 
     /**
-     * Returns the idempotency key.
+     * Returns the token key.
      *
      * @return string
      */
-    public function getIdempotencyKey();
+    public function getToken();
 
     /**
-     * Sets the idempotency key.
+     * Sets the token key.
      *
-     * @param  string  $idempotencyKey
+     * @param  string  $token
      * @return $this
      */
-    public function setIdempotencyKey($idempotencyKey);
+    public function setToken($token);
 }

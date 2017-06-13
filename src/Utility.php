@@ -22,22 +22,6 @@ namespace Hafael\Easyrec;
 
 class Utility
 {
-    /**
-     * Prepares the given parameters.
-     *
-     * @param  array  $parameters
-     * @return array
-     */
-    public static function prepareParameters(array $parameters)
-    {
-
-        $parameters = array_map(function ($parameter) {
-            return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
-        }, $parameters);
-
-        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));
-    }
-
 
     /**
      * Returns true if an endpoint list items
@@ -57,6 +41,24 @@ class Utility
             'worstrateditems',
             'actionhistoryforuser',
         ]);
+    }
+
+    /**
+     * Encode the given parameters.
+     *
+     * @param  array  $parameters
+     * @return array
+     */
+    public static function transformArrayIntoHttpQuery(array $parameters)
+    {
+
+        //Transforms the value of boolean parameters to string
+        $parameters = array_map(function ($parameter) {
+            return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
+        }, $parameters);
+
+
+        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));
     }
 
 

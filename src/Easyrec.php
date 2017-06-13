@@ -197,83 +197,28 @@ class Easyrec
     }
 
     /**
-     * Sets the idempotency key.
+     * Returns the token key.
      *
-     * @param  string  $idempotencyKey
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->config->getToken();
+    }
+
+    /**
+     * Sets the token key.
+     *
+     * @param  string  $token
      * @return $this
      */
-    public function idempotent($idempotencyKey)
+    public function setToken($token)
     {
-        $this->config->setIdempotencyKey($idempotencyKey);
+        $this->config->setToken($token);
 
         return $this;
     }
 
-    /**
-     * Sets the account id.
-     *
-     * @param  string  $accountId
-     * @return $this
-     */
-    public function accountId($accountId)
-    {
-        $this->config->setAccountId($accountId);
-
-        return $this;
-    }
-
-    /**
-     * Returns the amount converter class and method name.
-     *
-     * @return string
-     */
-    public static function getAmountConverter()
-    {
-        return static::$amountConverter;
-    }
-
-    /**
-     * Sets the amount converter class and method name.
-     *
-     * @param  $amountConverter  string
-     * @return void
-     */
-    public static function setAmountConverter($amountConverter)
-    {
-        static::$amountConverter = $amountConverter;
-    }
-
-    /**
-     * Disables the amount converter.
-     *
-     * @return void
-     */
-    public static function disableAmountConverter()
-    {
-        static::setAmountConverter(null);
-    }
-
-    /**
-     * Returns the default amount converter.
-     *
-     * @return string
-     */
-    public static function getDefaultAmountConverter()
-    {
-        return '\\Hafael\\Easyrec\\AmountConverter::convert';
-    }
-
-    /**
-     * Sets the default amount converter;
-     *
-     * @return void
-     */
-    public static function setDefaultAmountConverter()
-    {
-        static::setAmountConverter(
-            static::getDefaultAmountConverter()
-        );
-    }
 
     /**
      * Dynamically handle missing methods.
