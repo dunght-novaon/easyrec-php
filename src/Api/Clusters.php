@@ -20,7 +20,59 @@
 namespace Hafael\Easyrec\Api;
 
 
-class Clusters
+class Clusters extends Api implements ApiInterface
 {
+    /**
+     * This API call will return all cluster names of a given tenant..
+     *
+     * @return array|mixed
+     */
+    public function clusters()
+    {
+        return $this->_get("clusters");
+    }
+
+    /**
+     * This API will return all items of a given cluster.
+     *
+     * @param $clusterId
+     * @param $strategy
+     * @param $useFallback
+     * @param $requestedItemType
+     * @param boolean $withProfile
+     * @return array|mixed
+     */
+    public function itemsOfCluster($clusterId, $strategy = null, $useFallback = false, $requestedItemType = null, $withProfile = false)
+    {
+        return $this->_get("itemsofcluster", [
+            "clusterid" => $clusterId,
+            "numberOfResults" => $this->getPerPage(),
+            "offset" => $this->getOffset(),
+            "strategy" => $strategy,
+            "usefallback" => $useFallback,
+            "requesteditemtype" => $requestedItemType,
+            "withProfile" => $withProfile
+        ]);
+    }
+
+    /**
+     * With this API call you can create a new cluster.
+     *
+     * @param $token
+     * @param $clusterId
+     * @param null $clusterDescription
+     * @param bool $clusterParent
+     * @return array|mixed
+     */
+    public function view($token, $clusterId, $clusterDescription = null, $clusterParent = false)
+    {
+        return $this->_get("createcluster", [
+            "token" => $token,
+            "clusterid" => $clusterId,
+            "clusterdescription" => $clusterDescription,
+            "clusterparent" => $clusterParent,
+        ]);
+    }
+
 
 }
