@@ -20,7 +20,7 @@
 namespace Hafael\Easyrec\Api;
 
 
-class Clusters extends Api implements ApiInterface
+class Clusters extends Api
 {
     /**
      * This API call will return all cluster names of a given tenant..
