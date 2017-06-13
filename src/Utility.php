@@ -35,6 +35,29 @@ class Utility
             return is_bool($parameter) ? ($parameter === true ? 'true' : 'false') : $parameter;
         }, $parameters);
 
-        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));;
+        return preg_replace('/\%5B\d+\%5D/', '%5B%5D', http_build_query($parameters));
     }
+
+
+    /**
+     * Returns true if an endpoint list items
+     * @param $endpoint
+     * @return bool
+     */
+    public static function doesEndpointListItems($endpoint)
+    {
+        return in_array($endpoint, [ 'otherusersalsoviewed',
+            'otherusersalsobought',
+            'itemsratedgoodbyotherusers',
+            'recommendationsforuser',
+            'mostvieweditems',
+            'mostboughtitems',
+            'mostrateditems',
+            'bestrateditems',
+            'worstrateditems',
+            'actionhistoryforuser',
+        ]);
+    }
+
+
 }

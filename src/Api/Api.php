@@ -109,6 +109,7 @@ abstract class Api implements ApiInterface
         return $this;
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -184,6 +185,28 @@ abstract class Api implements ApiInterface
 
             $response = $this->getClient()->{$httpMethod}('api/'.$this->config->getApiVersion().'/json/'.$url, [ 'query' => $parameters ]);
 
+            // Add a key to the array with a list of all items' ID
+            if (Utility::doesEndpointListItems($url))
+            {
+
+
+                // Check that we have got the expected array
+                if ( ! is_null($response) AND array_key_exists('recommendedItems', $response))
+                {
+                    // Prevent from iterating over an empty array
+
+                    if (is_array($response->recommendedItems) AND !empty($response->recommendedItems))
+                    {
+                        $ids = [];
+                        foreach ($response->recommendedItems as $item)
+                        {
+                            $ids[] = $item->id;
+                        }
+
+                        $response->listIds = $ids;
+                    }
+                }
+            }
 
             return json_decode((string) $response->getBody(), true);
         } catch (ClientException $e) {

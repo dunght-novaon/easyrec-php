@@ -30,14 +30,14 @@ class Actions extends Api
      * @param $itemId
      * @param $itemDescription
      * @param $itemUrl
-     * @param $userId
-     * @param $itemImageUrl
-     * @param $actionTime
-     * @param $itemType
-     * @param $actionInfo
-     * @return array
+     * @param null $itemImageUrl
+     * @param null $itemType
+     * @param null $userId
+     * @param null $actionTime
+     * @param null $actionInfo
+     * @return array|mixed
      */
-    public function view($sessionId, $itemId, $itemDescription, $itemUrl, $userId, $itemImageUrl, $actionTime, $itemType, $actionInfo)
+    public function view($sessionId, $itemId, $itemDescription, $itemUrl, $itemImageUrl = null, $itemType = null, $userId = null, $actionTime = null, $actionInfo = null)
     {
 
         return $this->_get("view", [
@@ -45,10 +45,10 @@ class Actions extends Api
             "itemid" => $itemId,
             "itemdescription" => $itemDescription,
             "itemurl" => $itemUrl,
-            "userid" => $userId,
             "itemimageurl" => $itemImageUrl,
-            "actiontime" => $actionTime,
             "itemtype" => $itemType,
+            "userid" => $userId,
+            "actiontime" => $actionTime,
             "actioninfo" => $actionInfo,
         ]);
     }
@@ -56,28 +56,29 @@ class Actions extends Api
     /**
      * Creates a new buy.
      *
+     *
      * @param $sessionId
      * @param $itemId
      * @param $itemDescription
      * @param $itemUrl
-     * @param $userId
-     * @param $itemImageUrl
-     * @param $actionTime
-     * @param $itemType
-     * @param $actionInfo
-     * @return array
+     * @param null $itemImageUrl
+     * @param null $itemType
+     * @param null $userId
+     * @param null $actionTime
+     * @param null $actionInfo
+     * @return array|mixed
      */
-    public function buy($sessionId, $itemId, $itemDescription, $itemUrl, $userId, $itemImageUrl, $actionTime, $itemType, $actionInfo)
+    public function buy($sessionId, $itemId, $itemDescription, $itemUrl, $itemImageUrl = null, $itemType = null, $userId = null, $actionTime = null, $actionInfo = null)
     {
         return $this->_get("buy", [
             "sessionid" => $sessionId,
             "itemid" => $itemId,
             "itemdescription" => $itemDescription,
             "itemurl" => $itemUrl,
-            "userid" => $userId,
             "itemimageurl" => $itemImageUrl,
-            "actiontime" => $actionTime,
             "itemtype" => $itemType,
+            "userid" => $userId,
+            "actiontime" => $actionTime,
             "actioninfo" => $actionInfo,
         ]);
     }
@@ -85,30 +86,31 @@ class Actions extends Api
     /**
      * Creates a new rate.
      *
+     *
      * @param $sessionId
      * @param $itemId
      * @param $itemDescription
      * @param $itemUrl
-     * @param $userId
-     * @param $itemImageUrl
-     * @param $ratingValue
-     * @param $actionTime
-     * @param $itemType
-     * @param $actionInfo
-     * @return array
+     * @param int $ratingValue
+     * @param null $itemImageUrl
+     * @param null $itemType
+     * @param null $userId
+     * @param null $actionTime
+     * @param null $actionInfo
+     * @return array|mixed
      */
-    public function rate($sessionId, $itemId, $itemDescription, $itemUrl, $userId, $itemImageUrl, $ratingValue, $actionTime, $itemType, $actionInfo)
+    public function rate($sessionId, $itemId, $itemDescription, $itemUrl, int $ratingValue, $itemImageUrl = null, $itemType = null, $userId = null, $actionTime = null, $actionInfo = null)
     {
         return $this->_get("rate", [
             "sessionid" => $sessionId,
             "itemid" => $itemId,
             "itemdescription" => $itemDescription,
             "itemurl" => $itemUrl,
-            "userid" => $userId,
-            "itemimageurl" => $itemImageUrl,
             "ratingvalue" => $ratingValue,
-            "actiontime" => $actionTime,
+            "itemimageurl" => $itemImageUrl,
             "itemtype" => $itemType,
+            "userid" => $userId,
+            "actiontime" => $actionTime,
             "actioninfo" => $actionInfo,
         ]);
     }
@@ -125,28 +127,28 @@ class Actions extends Api
      * @param $itemId
      * @param $itemDescription
      * @param $itemUrl
-     * @param $userId
      * @param $itemImageUrl
      * @param $actionType
-     * @param $actionValue
-     * @param $actionTime
-     * @param $itemType
-     * @param $actionInfo
-     * @return array
+     * @param null $actionValue
+     * @param null $itemType
+     * @param null $userId
+     * @param null $actionTime
+     * @param null $actionInfo
+     * @return array|mixed
      */
-    public function sendAction($sessionId, $itemId, $itemDescription, $itemUrl, $userId, $itemImageUrl, $actionType, $actionValue, $actionTime, $itemType, $actionInfo)
+    public function sendAction($sessionId, $itemId, $itemDescription, $itemUrl, $itemImageUrl, $actionType, $actionValue = null, $itemType = null, $userId = null, $actionTime = null, $actionInfo = null)
     {
         return $this->_get("sendaction", [
             "sessionid" => $sessionId,
             "itemid" => $itemId,
             "itemdescription" => $itemDescription,
             "itemurl" => $itemUrl,
-            "userid" => $userId,
-            "itemimageurl" => $itemImageUrl,
             "actiontype" => $actionType,
             "actionvalue" => $actionValue,
-            "actiontime" => $actionTime,
+            "itemimageurl" => $itemImageUrl,
             "itemtype" => $itemType,
+            "userid" => $userId,
+            "actiontime" => $actionTime,
             "actioninfo" => $actionInfo,
         ]);
     }
@@ -159,23 +161,23 @@ class Actions extends Api
      * This way it can be tracked if the recommendations shown to users are appreciated.
      *
      * @param $sessionId
-     * @param $itemFromId
-     * @param $itemFromType
-     * @param $itemToId
-     * @param $itemToType
      * @param $recType
-     * @param $userId
-     * @return array
+     * @param $itemToId
+     * @param null $itemToType
+     * @param null $itemFromId
+     * @param null $itemFromType
+     * @param null $userId
+     * @return array|mixed
      */
-    public function track($sessionId, $itemFromId, $itemFromType, $itemToId, $itemToType, $recType, $userId)
+    public function track($sessionId, $recType, $itemToId, $itemToType = null, $itemFromId = null, $itemFromType = null, $userId = null)
     {
         return $this->_get("track", [
             "sessionid" => $sessionId,
-            "itemfromid" => $itemFromId,
-            "itemfromtype" => $itemFromType,
+            "rectype" => $recType,
             "itemtoid" => $itemToId,
             "itemtotype" => $itemToType,
-            "rectype" => $recType,
+            "itemfromid" => $itemFromId,
+            "itemfromtype" => $itemFromType,
             "userid" => $userId,
         ]);
     }
