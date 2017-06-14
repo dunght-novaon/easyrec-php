@@ -50,25 +50,26 @@ class Easyrec
      * @param string $apiKey
      * @param string $tenantId
      * @param string $apiVersion
-     * @return void
+     * @param string $token
      */
-    public function __construct($baseUrl = null, $apiKey = null, $tenantId= null, $apiVersion = null)
+    public function __construct($baseUrl = null, $apiKey = null, $tenantId= null, $apiVersion = null, $token = null)
     {
-        $this->config = new Config(self::VERSION, $baseUrl, $apiKey, $tenantId, $apiVersion);
+        $this->config = new Config(self::VERSION, $baseUrl, $apiKey, $tenantId, $apiVersion, $token);
     }
 
     /**
      * Create a new Easyrec API instance.
      *
-     * @param  string  $baseUrl
-     * @param  string  $apiKey
-     * @param  string  $tenantId
-     * @param  string  $apiVersion
-     * @return \Hafael\Easyrec\Easyrec
+     * @param  string $baseUrl
+     * @param  string $apiKey
+     * @param  string $tenantId
+     * @param  string $apiVersion
+     * @param  string $token
+     * @return Easyrec
      */
-    public static function make($baseUrl = null, $apiKey = null, $tenantId= null, $apiVersion = null)
+    public static function make($baseUrl = null, $apiKey = null, $tenantId= null, $apiVersion = null, $token = null)
     {
-        return new static($baseUrl, $apiKey, $tenantId, $apiVersion);
+        return new static($baseUrl, $apiKey, $tenantId, $apiVersion, $token);
     }
 
     /**
