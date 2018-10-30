@@ -58,10 +58,10 @@ class ActionsTest extends AbstractApiTest
 
     public function testBuy()
     {
-        $sessionId = 'dddd';
-        $itemId = 'ddd';
-        $itemDescription = 'ddd';
-        $itemUrl = 'dddd';
+        $sessionId = 'SESSIONID001';
+        $itemId = 'ITEMID001';
+        $itemDescription = 'ITEMID001 DESC';
+        $itemUrl = 'http://localhost:8001/shop/ITEMID001';
 
         $result = $this->getApi()->buy(
             $sessionId,
@@ -80,10 +80,10 @@ class ActionsTest extends AbstractApiTest
 
     public function testRate()
     {
-        $sessionId = 'dddd';
-        $itemId = 'ddd';
-        $itemDescription = 'ddd';
-        $itemUrl = 'dddd';
+        $sessionId = 'SESSIONID001';
+        $itemId = 'ITEMID001';
+        $itemDescription = 'ITEMID001 DESC';
+        $itemUrl = 'http://localhost:8001/shop/ITEMID001';
         $ratingValue = 4;
 
         $result = $this->getApi()->rate(
@@ -104,13 +104,12 @@ class ActionsTest extends AbstractApiTest
 
     public function testSendAction()
     {
-        $sessionId = 'dddd';
-        $itemId = 'ddd';
-        $itemDescription = 'ddd';
-        $itemUrl = 'dddd';
-        $ratingValue = 4;
-        $actionType = 'fdf';
-        $actionValue = 'fdf';
+        $sessionId = 'SESSIONID001';
+        $itemId = 'ITEMID001';
+        $itemDescription = 'ITEMID001 DESC';
+        $itemUrl = 'http://localhost:8001/shop/ITEMID001';
+        $actionType = 'OC_ACT_VIEW';
+        $actionValue = 'OC_ACT_VIEW';
 
         $result = $this->getApi()->sendAction(
             $sessionId,
@@ -131,9 +130,9 @@ class ActionsTest extends AbstractApiTest
 
     public function testTrack()
     {
-        $sessionId = 'fdsfs';
-        $recType = 'fdsfs';
-        $itemToId = 'fdsfs';
+        $sessionId = 'SESSIONID001';
+        $recType = 'BOUGHT_TOGETHER';
+        $itemToId = 'ITEMID001';
 
         $result = $this->getApi()->track(
             $sessionId,

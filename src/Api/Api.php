@@ -248,7 +248,7 @@ abstract class Api implements ApiInterface
                             }
                         }
 
-                        echo json_decode((string)$response->getBody(), true);
+                        return json_decode((string)$response->getBody(), true);
                     },
                     function ($error) {
                         // This is called if the first promise error handler in the
@@ -273,7 +273,7 @@ abstract class Api implements ApiInterface
     protected function getClient()
     {
         return new Client([
-            'base_uri' => $this->baseUrl(),
+            'base_url' => $this->baseUrl(),
             'timeout' => 5, // response
             'connect_timeout' => 5 // connection
         ]);
