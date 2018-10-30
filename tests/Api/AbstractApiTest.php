@@ -10,7 +10,7 @@ require_once(__DIR__ . '/../../vendor/autoload.php');
 abstract class AbstractApiTest extends \PHPUnit\Framework\TestCase
 {
     const VERSION = '1.1';
-    const BASE_URL = 'http://localhost:8081/easyrec-web/api/1.1/json/';
+    const BASE_URL = 'http://localhost:8081/easyrec-web/';
     const API_KEY = '6491d97a8a0c3f7d07b1df5d83a83521';
     const TENANT_ID = 'EASYREC_DEMO';
     const API_VERSION = '1.1';

@@ -20,13 +20,11 @@
 namespace Hafael\Easyrec\Api;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Message\FutureResponse;
+use GuzzleHttp\Message\RequestInterface;
 use Hafael\Easyrec\Utility;
 use Hafael\Easyrec\ConfigInterface;
-use Psr\Http\Message\RequestInterface;
 use Hafael\Easyrec\Exception\Handler;
-use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
@@ -57,7 +55,7 @@ abstract class Api implements ApiInterface
     /**
      * Constructor.
      *
-     * @param  \Hafael\Easyrec\ConfigInterface  $client
+     * @param  \Hafael\Easyrec\ConfigInterface $client
      * @return void
      */
     public function __construct(ConfigInterface $config)
@@ -86,7 +84,7 @@ abstract class Api implements ApiInterface
      */
     public function setPerPage($perPage)
     {
-        $this->perPage = (int) $perPage;
+        $this->perPage = (int)$perPage;
 
         return $this;
     }
@@ -104,7 +102,7 @@ abstract class Api implements ApiInterface
      */
     public function setOffset($offset)
     {
-        $this->offset = (int) $offset;
+        $this->offset = (int)$offset;
 
         return $this;
     }
@@ -177,39 +175,91 @@ abstract class Api implements ApiInterface
     {
         try {
             $parameters = array_merge($parameters, [
-                'apikey' => isset($parameters['apiKey'])?$parameters['apiKey']:$this->config->getApiKey(),
-                'tenantid' => isset($parameters['tenantId'])?$parameters['tenantId']:$this->config->getTenantId(),
-                'token' => isset($parameters['token'])?$parameters['token']:$this->config->getToken(),
+                'apikey' => isset($parameters['apiKey']) ? $parameters['apiKey'] : $this->config->getApiKey(),
+                'tenantid' => isset($parameters['tenantId']) ? $parameters['tenantId'] : $this->config->getTenantId(),
+                'token' => isset($parameters['token']) ? $parameters['token'] : $this->config->getToken(),
             ]);
 
             $parameters = Utility::transformArrayIntoHttpQuery($parameters);
 
-            $response = $this->getClient()->{$httpMethod}('api/'.$this->config->getApiVersion().'/json/'.$url, [ 'query' => $parameters ]);
+            /** @var RequestInterface $request */
+            $request = $this->getClient()->createRequest(
+                $httpMethod,
+                'api/' . $this->config->getApiVersion() . '/json/' . $url,
+                [
+                    'future' => true
+                ]
+            );
 
-            // Add a key to the array with a list of all items' ID
-            if (Utility::doesEndpointListItems($url))
-            {
+            // set request headers
+            $config = $this->config;
+            if ($token = $config->getToken()) {
+                $request->addHeader('Easyrec-Token', $token);
+            }
+            $request->addHeader('Easyrec-Version', $config->getApiVersion());
+            $request->addHeader('User-Agent', 'VerdeIT-Easyrec-PHP/' . $config->getVersion());
+            $request->addHeader('Authorization', 'Basic ' . base64_encode($config->getApiKey()));
 
+            // set query
+            $request->setQuery($parameters);
 
-                // Check that we have got the expected array
-                if ( ! is_null($response) AND array_key_exists('recommendedItems', $response))
-                {
-                    // Prevent from iterating over an empty array
+            // send
+            $response = $this->getClient()->send($request);
 
-                    if (is_array($response->recommendedItems) AND !empty($response->recommendedItems))
-                    {
-                        $ids = [];
-                        foreach ($response->recommendedItems as $item)
-                        {
-                            $ids[] = $item->id;
+            // async handler
+            /** @var FutureResponse $response */
+            $response
+                ->then(
+                    function ($response) {
+                        // This is called when the request succeeded
+                        echo 'Success: ' . $response->getStatusCode();
+                        // Returning a value will forward the value to the next promise
+                        // in the chain.
+                        return $response;
+                    },
+                    function ($error) {
+                        // This is called when the exception failed.
+                        echo 'Exception: ' . $error->getMessage();
+                        // Throwing will "forward" the exception to the next promise
+                        // in the chain.
+                        throw $error;
+                    }
+                )
+                ->then(
+                    function ($response) use ($url) {
+                        // This is called after the first promise in the chain. It
+                        // receives the value returned from the first promise.
+                        echo $response->getReasonPhrase();
+
+                        // Add a key to the array with a list of all items' ID
+                        if (Utility::doesEndpointListItems($url)) {
+                            // Check that we have got the expected array
+                            if (!is_null($response) AND array_key_exists('recommendedItems', $response)) {
+                                // Prevent from iterating over an empty array
+
+                                if (is_array($response->recommendedItems) AND !empty($response->recommendedItems)) {
+                                    $ids = [];
+                                    foreach ($response->recommendedItems as $item) {
+                                        $ids[] = $item->id;
+                                    }
+
+                                    $response->listIds = $ids;
+                                }
+                            }
                         }
 
-                        $response->listIds = $ids;
+                        echo json_decode((string)$response->getBody(), true);
+                    },
+                    function ($error) {
+                        // This is called if the first promise error handler in the
+                        // chain rethrows the exception.
+                        echo 'Error: ' . $error->getMessage();
                     }
-                }
-            }
+                );
 
-            return json_decode((string) $response->getBody(), true);
+            return [
+                'message' => 'request sent!'
+            ];
         } catch (ClientException $e) {
             new Handler($e);
         }
@@ -223,42 +273,9 @@ abstract class Api implements ApiInterface
     protected function getClient()
     {
         return new Client([
-            'base_uri' => $this->baseUrl(), 'handler' => $this->createHandler()
+            'base_uri' => $this->baseUrl(),
+            'timeout' => 5, // response
+            'connect_timeout' => 5 // connection
         ]);
-    }
-
-    /**
-     * Create the client handler.
-     *
-     * @return \GuzzleHttp\HandlerStack
-     */
-    protected function createHandler()
-    {
-        $stack = HandlerStack::create();
-
-        $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
-
-            $config = $this->config;
-
-            if ($token = $config->getToken()) {
-                $request = $request->withHeader('Easyrec-Token', $token);
-            }
-
-            $request = $request->withHeader('Easyrec-Version', $config->getApiVersion());
-
-            $request = $request->withHeader('User-Agent', 'VerdeIT-Easyrec-PHP/'.$config->getVersion());
-
-            $request = $request->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()));
-
-            return $request;
-        }));
-
-        $stack->push(Middleware::retry(function ($retries, RequestInterface $request, ResponseInterface $response = null, TransferException $exception = null) {
-            return $retries < 3 && ($exception instanceof ConnectException || ($response && $response->getStatusCode() >= 500));
-        }, function ($retries) {
-            return (int) pow(2, $retries) * 1000;
-        }));
-
-        return $stack;
     }
 }
