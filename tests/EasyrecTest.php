@@ -1,5 +1,8 @@
 <?php
 
+namespace Hafael\Easyrec\Tests;
+
+
 class EasyrecTest extends \PHPUnit\Framework\TestCase
 {
     public function testAdd()
