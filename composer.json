@@ -1,19 +1,19 @@
 {
-    "name": "hafael/easyrec-php",
+    "name": "dunght-novaon/easyrec-php",
     "type": "library",
     "description": "Logging for PHP 5.3",
     "keywords": [ "easyrec", "php", "recommendation", "ranking" ],
-    "homepage": "https://github.com/hafael/easyrec-php",
+    "homepage": "https://github.com/dunght-novaon/easyrec-php",
     "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "VerdeIT",
-            "email": "villa655321verde@gmail.com",
-            "homepage": "https://github.com/hafael"
+            "name": "Dzung Ha The",
+            "email": "dunght@novaon.asia",
+            "homepage": "https://github.com/dunght-novaon"
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": ">=6.0",
+        "guzzlehttp/guzzle": ">=4.2,<6.0",
         "php": ">=5.4.0"
     },
     "require-dev": {
