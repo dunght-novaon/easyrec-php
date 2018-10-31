@@ -14,7 +14,7 @@ abstract class AbstractApiTest extends \PHPUnit\Framework\TestCase
     const API_KEY = '6491d97a8a0c3f7d07b1df5d83a83521';
     const TENANT_ID = 'EASYREC_DEMO';
     const API_VERSION = '1.1';
-    const TOKEN = '72c9695ff8cf8039f1eb6307aff8d1f2';
+    const TOKEN = '970217a66b67ea7f0145ab82f2a7ec92';
 
     /**
      * @var Api|null
