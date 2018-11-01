@@ -171,7 +171,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function execute($httpMethod, $url, array $parameters = [])
+    public function execute($httpMethod, $url, array $parameters = [], $async = false, $callback = null)
     {
         try {
             $parameters = array_merge($parameters, [
@@ -187,7 +187,7 @@ abstract class Api implements ApiInterface
                 $httpMethod,
                 'api/' . $this->config->getApiVersion() . '/json/' . $url,
                 [
-                    'future' => true
+                    'future' => $async
                 ]
             );
 
@@ -206,7 +206,19 @@ abstract class Api implements ApiInterface
             // send
             $response = $this->getClient()->send($request);
 
-            // async handler
+            // sync handle
+            if (!$async) {
+                if (is_callable($callback)) {
+                    call_user_func_array($callback, json_decode((string)$response->getBody(), true));
+                }
+
+                return [
+                    'message' => 'success!',
+                    'response' => json_decode((string)$response->getBody(), true)
+                ];
+            }
+
+            // async handle
             /** @var FutureResponse $response */
             $response
                 ->then(
@@ -226,7 +238,7 @@ abstract class Api implements ApiInterface
                     }
                 )
                 ->then(
-                    function ($response) use ($url) {
+                    function ($response) use ($url, $callback) {
                         // This is called after the first promise in the chain. It
                         // receives the value returned from the first promise.
                         echo $response->getReasonPhrase();
@@ -248,12 +260,18 @@ abstract class Api implements ApiInterface
                             }
                         }
 
-                        return json_decode((string)$response->getBody(), true);
+                        if (is_callable($callback)) {
+                            call_user_func_array($callback, json_decode((string)$response->getBody(), true));
+                        }
                     },
-                    function ($error) {
+                    function ($error) use ($callback) {
                         // This is called if the first promise error handler in the
                         // chain rethrows the exception.
                         echo 'Error: ' . $error->getMessage();
+
+                        if (is_callable($callback)) {
+                            call_user_func_array($callback, []);
+                        }
                     }
                 );
 

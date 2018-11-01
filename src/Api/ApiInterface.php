@@ -125,10 +125,12 @@ interface ApiInterface
     /**
      * Executes the HTTP request.
      *
-     * @param  string  $httpMethod
-     * @param  string  $url
-     * @param  array  $parameters
+     * @param  string $httpMethod
+     * @param  string $url
+     * @param  array $parameters
+     * @param  bool $async
+     * @param  callable|null $asyncCallback
      * @return array
      */
-    public function execute($httpMethod, $url, array $parameters = []);
+    public function execute($httpMethod, $url, array $parameters = [], $async = true, $asyncCallback = null);
 }
